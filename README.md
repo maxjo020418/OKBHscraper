@@ -12,6 +12,7 @@ Originally made as a joke project for r/okbuddyhololive
 - sklearn
 - tqdm
 - requests
+
 Download [WordCloud](https://github.com/amueller/word_cloud) directly into OKBHscraper NOT using pip.
 
 ###### how to use
