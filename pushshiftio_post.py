@@ -4,8 +4,10 @@ import requests
 import itertools
 import numpy as np
 import time
-from datetime import datetime, timedelta
 import pickle
+import tqdm
+
+from datetime import datetime, timedelta
 print('import complete')
 
 def make_request(uri, max_retries = 5):
@@ -35,7 +37,7 @@ def pull_posts_for(subreddit, start_at, end_at):
             'permalink': post['permalink'],
         }, posts))
 
-    SIZE = 100 # maximum request amount from pushshift io
+    SIZE = 100 # maximum request amount to pushshift.io at once
     URI_TEMPLATE = r'https://api.pushshift.io/reddit/search/submission/?subreddit={}&after={}&before={}&limit={}&fields=id,created_utc,permalink'
 
     post_collections = map_posts( \
@@ -64,17 +66,17 @@ def pull_posts_for(subreddit, start_at, end_at):
 
 ############################################################################################################
 
-subreddit = 'okbuddyhololive'
+days = 3
+subreddit = 'citiesskylines'
 end_at = math.ceil(datetime.utcnow().timestamp())
 start_at = math.floor((datetime.utcnow() - \
-                       timedelta(days=30)).timestamp())
-print(f'from {start_at} to {end_at}')
+                       timedelta(days=days)).timestamp())
+print(f'from {start_at} to {end_at}, {days} days @ r/{subreddit}')
 
 posts = pull_posts_for(subreddit, start_at, end_at)
 
-
 print(len(posts))
 
-f = open("post_filtered", "wb")
+f = open("./data/post_filtered_pickle", "wb")
 pickle.dump(posts, f)
 f.close()
